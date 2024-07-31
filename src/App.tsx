@@ -1,7 +1,6 @@
-import { Authenticated, GitHubBanner, Refine } from "@refinedev/core";
+import { Authenticated, Refine } from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
-
 import {
   AuthPage,
   ErrorComponent,
@@ -30,8 +29,8 @@ import {
   PlatesEdit,
   PlatesShow,
 } from "./pages/plates";
-import LogList from "./pages/logs/list";
-import { supabaseClient } from "./utility";
+import LogList from "./pages/logs/list"; // Correct import path
+import { supabaseClient } from "./utility/supabaseClient";
 
 function App() {
   return (
@@ -48,13 +47,13 @@ function App() {
                 notificationProvider={useNotificationProvider()}
                 resources={[
                   {
-                    name: "logs", 
+                    name: "logs",
                     list: "/logs",
                     meta: {
                       canDelete: true,
                     },
                     options: {
-                      label: "Vehicle Access Log", 
+                      label: "Vehicle Access Log",
                     },
                   },
                   {
@@ -67,7 +66,7 @@ function App() {
                       canDelete: true,
                     },
                     options: {
-                      label: "Manage Vehicle Access", 
+                      label: "Manage Vehicle Access",
                     },
                   },
                 ]}
@@ -97,7 +96,7 @@ function App() {
                   >
                     <Route
                       index
-                      element={<NavigateToResource resource="blog_posts" />}
+                      element={<NavigateToResource resource="logs" />}
                     />
                     <Route path="/plates">
                       <Route index element={<PlatesList />} />

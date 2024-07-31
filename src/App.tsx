@@ -19,6 +19,7 @@ import routerBindings, {
 import { dataProvider, liveProvider } from "@refinedev/supabase";
 import { App as AntdApp } from "antd";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { CarOutlined, SettingOutlined, VideoCameraFilled } from "@ant-design/icons"; // Import the desired icon
 import authProvider from "./authProvider";
 import { AppIcon } from "./components/app-icon";
 import { Header } from "./components/header";
@@ -54,6 +55,7 @@ function App() {
                     },
                     options: {
                       label: "Vehicle Access Log",
+                      icon: <CarOutlined />,
                     },
                   },
                   {
@@ -66,7 +68,8 @@ function App() {
                       canDelete: true,
                     },
                     options: {
-                      label: "Manage Vehicle Access",
+                      label: "Manage Vehicles",
+                      icon: <SettingOutlined />,
                     },
                   },
                 ]}
@@ -75,7 +78,7 @@ function App() {
                   warnWhenUnsavedChanges: true,
                   useNewQueryKeys: true,
                   projectId: "oYbwst-haDFHI-E0Zwsi",
-                  title: { text: "Gate Access Manager", icon: <AppIcon /> },
+                  title: { text: "Gate Access Manager", icon: <VideoCameraFilled /> },
                 }}
               >
                 <Routes>

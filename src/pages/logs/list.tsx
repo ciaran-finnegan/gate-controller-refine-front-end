@@ -108,7 +108,7 @@ export const LogList: React.FC = () => {
         pagination={{
           ...listProps.pagination,
           showSizeChanger: true,
-          pageSizeOptions: ["10", "20", "50", "100"],
+          pageSizeOptions: ["8", "20", "48", "100"],
           position: "bottom",
         }}
       />

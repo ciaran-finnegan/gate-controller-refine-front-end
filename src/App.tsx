@@ -29,7 +29,7 @@ import {
   PlatesEdit,
   PlatesShow,
 } from "./pages/plates";
-import { LogList } from "./pages/logs/list"; 
+import LogList from "./pages/logs/list"; 
 import { supabaseClient } from "./utility/supabaseClient";
 
 function App() {

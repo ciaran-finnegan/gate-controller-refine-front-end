@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
-import { useList } from "@refinedev/core";
+import { useList, HttpError } from "@refinedev/core";
 import { Row, Col, Card, Typography, Spin, Statistic, DatePicker, ConfigProvider } from "antd";
 import { Bar, Line, Pie } from "@ant-design/plots";
-import moment from "moment";
+import dayjs, { Dayjs } from "dayjs";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 const { RangePicker } = DatePicker;
 
 const capitalize = (str: string) => {
@@ -13,9 +13,9 @@ const capitalize = (str: string) => {
 };
 
 const Analytics: React.FC = () => {
-  const [dateRange, setDateRange] = React.useState([
-    moment().subtract(365, 'days'),
-    moment()
+  const [dateRange, setDateRange] = React.useState<[Dayjs, Dayjs]>([
+    dayjs().subtract(365, 'days'),
+    dayjs()
   ]);
 
   const { data, isLoading, error } = useList({
@@ -40,7 +40,7 @@ const Analytics: React.FC = () => {
   const statistics = useMemo(() => {
     if (logs.length === 0) return {};
 
-    const userCounts = logs.reduce((acc, log) => {
+    const userCounts = logs.reduce((acc: Record<string, number>, log) => {
       if (log.vehicle_registered_to_name) {
         const userName = capitalize(log.vehicle_registered_to_name);
         acc[userName] = (acc[userName] || 0) + 1;
@@ -69,7 +69,7 @@ const Analytics: React.FC = () => {
     if (logs.length === 0) return {};
 
     // User Distribution
-    const userDistribution = logs.reduce((acc, log) => {
+    const userDistribution = logs.reduce((acc: Record<string, number>, log) => {
       if (log.vehicle_registered_to_name) {
         const userName = capitalize(log.vehicle_registered_to_name);
         acc[userName] = (acc[userName] || 0) + 1;
@@ -84,8 +84,8 @@ const Analytics: React.FC = () => {
       }));
 
     // Entries by Time of Day
-    const timeOfDayDistribution = logs.reduce((acc, log) => {
-      const hour = moment(log.timestamp).hour();
+    const timeOfDayDistribution = logs.reduce((acc: Record<number, number>, log) => {
+      const hour = dayjs(log.timestamp).hour();
       acc[hour] = (acc[hour] || 0) + 1;
       return acc;
     }, {});
@@ -96,8 +96,8 @@ const Analytics: React.FC = () => {
     }));
 
     // Daily Entries Over Time
-    const dailyEntries = logs.reduce((acc, log) => {
-      const date = moment(log.timestamp).format("YYYY-MM-DD");
+    const dailyEntries = logs.reduce((acc: Record<string, number>, log) => {
+      const date = dayjs(log.timestamp).format("YYYY-MM-DD");
       acc[date] = (acc[date] || 0) + 1;
       return acc;
     }, {});
@@ -108,7 +108,7 @@ const Analytics: React.FC = () => {
     }));
 
     // Access Frequency by User
-    const userFrequency = logs.reduce((acc, log) => {
+    const userFrequency = logs.reduce((acc: Record<string, number>, log) => {
       if (log.vehicle_registered_to_name) {
         const userName = capitalize(log.vehicle_registered_to_name);
         acc[userName] = (acc[userName] || 0) + 1;
@@ -134,7 +134,7 @@ const Analytics: React.FC = () => {
   }
 
   if (error) {
-    return <div>Error loading data: {error.message}</div>;
+    return <div>Error loading data: {(error as HttpError).message}</div>;
   }
 
   return (
@@ -147,9 +147,13 @@ const Analytics: React.FC = () => {
           <Col>
             <RangePicker
               value={dateRange}
-              onChange={(dates) => setDateRange(dates)}
+              onChange={(dates) => {
+                if (dates) {
+                  setDateRange(dates as [Dayjs, Dayjs]);
+                }
+              }}
               allowClear={false}
-              defaultPickerValue={[moment().subtract(90, 'days'), moment()]}
+              defaultPickerValue={[dayjs().subtract(90, 'days'), dayjs()]}
             />
           </Col>
         </Row>
@@ -187,7 +191,7 @@ const Analytics: React.FC = () => {
                 }}
                 interactions={[{ type: 'element-active' }]}
                 tooltip={{
-                  formatter: (datum) => ({ name: datum.user, value: datum.count }),
+                  formatter: (datum: { user: string, count: number }) => ({ name: datum.user, value: datum.count }),
                 }}
               />
             </Card>
@@ -202,7 +206,7 @@ const Analytics: React.FC = () => {
                   title: { text: 'Hour of Day' },
                   tickCount: 24,
                   label: {
-                    formatter: (text) => `${text}h`,
+                    formatter: (text: string) => `${text}h`,
                   },
                 }}
                 yAxis={{
@@ -230,7 +234,7 @@ const Analytics: React.FC = () => {
           <Col span={24}>
             <Card title="Top 10 Users by Access Frequency">
               <Bar
-                data={chartData.userFrequencyChartData.filter((item) => item.name !== "Unknown")}
+                data={chartData.userFrequencyChartData?.filter((item) => item.name !== "Unknown")}
                 xField="name"
                 yField="count"
                 seriesField="name"

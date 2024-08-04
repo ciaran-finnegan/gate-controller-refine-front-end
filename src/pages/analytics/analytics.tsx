@@ -4,7 +4,7 @@ import { Row, Col, Card, Typography, Spin, Statistic, DatePicker, ConfigProvider
 import { Bar, Line, Pie } from "@ant-design/plots";
 import moment from "moment";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 const { RangePicker } = DatePicker;
 
 const capitalize = (str: string) => {
@@ -12,13 +12,19 @@ const capitalize = (str: string) => {
   return str.replace(/\b\w/g, char => char.toUpperCase());
 };
 
+interface Log {
+  vehicle_registered_to_name?: string;
+  plate_number: string;
+  timestamp: string;
+}
+
 const Analytics: React.FC = () => {
   const [dateRange, setDateRange] = React.useState([
     moment().subtract(365, 'days'),
     moment()
   ]);
 
-  const { data, isLoading, error } = useList({
+  const { data, isLoading, error } = useList<Log>({
     resource: "log",
     filters: [
       {
@@ -40,7 +46,7 @@ const Analytics: React.FC = () => {
   const statistics = useMemo(() => {
     if (logs.length === 0) return {};
 
-    const userCounts = logs.reduce((acc, log) => {
+    const userCounts: Record<string, number> = logs.reduce((acc, log) => {
       if (log.vehicle_registered_to_name) {
         const userName = capitalize(log.vehicle_registered_to_name);
         acc[userName] = (acc[userName] || 0) + 1;
@@ -69,7 +75,7 @@ const Analytics: React.FC = () => {
     if (logs.length === 0) return {};
 
     // User Distribution
-    const userDistribution = logs.reduce((acc, log) => {
+    const userDistribution: Record<string, number> = logs.reduce((acc, log) => {
       if (log.vehicle_registered_to_name) {
         const userName = capitalize(log.vehicle_registered_to_name);
         acc[userName] = (acc[userName] || 0) + 1;
@@ -84,7 +90,7 @@ const Analytics: React.FC = () => {
       }));
 
     // Entries by Time of Day
-    const timeOfDayDistribution = logs.reduce((acc, log) => {
+    const timeOfDayDistribution: Record<number, number> = logs.reduce((acc, log) => {
       const hour = moment(log.timestamp).hour();
       acc[hour] = (acc[hour] || 0) + 1;
       return acc;
@@ -96,7 +102,7 @@ const Analytics: React.FC = () => {
     }));
 
     // Daily Entries Over Time
-    const dailyEntries = logs.reduce((acc, log) => {
+    const dailyEntries: Record<string, number> = logs.reduce((acc, log) => {
       const date = moment(log.timestamp).format("YYYY-MM-DD");
       acc[date] = (acc[date] || 0) + 1;
       return acc;
@@ -108,7 +114,7 @@ const Analytics: React.FC = () => {
     }));
 
     // Access Frequency by User
-    const userFrequency = logs.reduce((acc, log) => {
+    const userFrequency: Record<string, number> = logs.reduce((acc, log) => {
       if (log.vehicle_registered_to_name) {
         const userName = capitalize(log.vehicle_registered_to_name);
         acc[userName] = (acc[userName] || 0) + 1;
@@ -147,7 +153,7 @@ const Analytics: React.FC = () => {
           <Col>
             <RangePicker
               value={dateRange}
-              onChange={(dates) => setDateRange(dates)}
+              onChange={(dates) => setDateRange(dates || [moment().subtract(365, 'days'), moment()])}
               allowClear={false}
               defaultPickerValue={[moment().subtract(90, 'days'), moment()]}
             />

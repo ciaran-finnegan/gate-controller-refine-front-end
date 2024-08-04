@@ -1,37 +1,39 @@
-import { Authenticated, Refine } from "@refinedev/core";
-import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
-import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
+import React from 'react';
+import { Authenticated, Refine } from '@refinedev/core';
+import { DevtoolsPanel, DevtoolsProvider } from '@refinedev/devtools';
+import { RefineKbar, RefineKbarProvider } from '@refinedev/kbar';
 import {
   AuthPage,
   ErrorComponent,
   ThemedLayoutV2,
   ThemedSiderV2,
   useNotificationProvider,
-} from "@refinedev/antd";
-import "@refinedev/antd/dist/reset.css";
+} from '@refinedev/antd';
+import '@refinedev/antd/dist/reset.css';
 
 import routerBindings, {
   CatchAllNavigate,
   DocumentTitleHandler,
   NavigateToResource,
   UnsavedChangesNotifier,
-} from "@refinedev/react-router-v6";
-import { dataProvider, liveProvider } from "@refinedev/supabase";
-import { App as AntdApp } from "antd";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-import { CarOutlined, SettingOutlined, VideoCameraFilled } from "@ant-design/icons"; // Import the desired icon
-import authProvider from "./authProvider";
-import { AppIcon } from "./components/app-icon";
-import { Header } from "./components/header";
-import { ColorModeContextProvider } from "./contexts/color-mode";
+} from '@refinedev/react-router-v6';
+import { dataProvider, liveProvider } from '@refinedev/supabase';
+import { App as AntdApp } from 'antd';
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
+import { CarOutlined, SettingOutlined, VideoCameraFilled } from '@ant-design/icons';
+import authProvider from './authProvider';
+import { AppIcon } from './components/app-icon';
+import { Header } from './components/header';
+import { ColorModeContextProvider } from './contexts/color-mode';
 import {
   PlatesList,
   PlatesCreate,
   PlatesEdit,
   PlatesShow,
-} from "./pages/plates";
-import { LogList } from "./pages/logs";
-import { supabaseClient } from "./utility/supabaseClient";
+} from './pages/plates';
+import { LogList } from './pages/logs';
+import { Analytics } from './pages/analytics'; // Correct import statement
+import { supabaseClient } from './utility/supabaseClient';
 
 function App() {
   return (
@@ -48,28 +50,39 @@ function App() {
                 notificationProvider={useNotificationProvider()}
                 resources={[
                   {
-                    name: "logs",
-                    list: "/logs",
+                    name: 'logs',
+                    list: '/logs',
                     meta: {
                       canDelete: true,
                     },
                     options: {
-                      label: "Vehicle Access Log",
+                      label: 'Vehicle Access Log',
                       icon: <CarOutlined />,
                     },
                   },
                   {
-                    name: "plates",
-                    list: "/plates",
-                    create: "/plates/create",
-                    edit: "/plates/edit/:id",
-                    show: "/plates/show/:id",
+                    name: 'plates',
+                    list: '/plates',
+                    create: '/plates/create',
+                    edit: '/plates/edit/:id',
+                    show: '/plates/show/:id',
                     meta: {
                       canDelete: true,
                     },
                     options: {
-                      label: "Manage Vehicles",
+                      label: 'Manage Vehicles',
                       icon: <SettingOutlined />,
+                    },
+                  },
+                  {
+                    name: 'analytics',
+                    list: '/analytics',
+                    meta: {
+                      canDelete: true,
+                    },
+                    options: {
+                      label: 'Analytics',
+                      icon: <VideoCameraFilled />,
                     },
                   },
                 ]}
@@ -77,16 +90,16 @@ function App() {
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
                   useNewQueryKeys: true,
-                  projectId: "oYbwst-haDFHI-E0Zwsi",
-                  title: { text: "Gate Access Manager", icon: <VideoCameraFilled /> },
+                  projectId: 'oYbwst-haDFHI-E0Zwsi',
+                  title: { text: 'Gate Access Manager', icon: <VideoCameraFilled /> },
                 }}
               >
                 <Routes>
                   <Route
                     element={
                       <Authenticated
-                        key="authenticated-inner"
-                        fallback={<CatchAllNavigate to="/login" />}
+                        key='authenticated-inner'
+                        fallback={<CatchAllNavigate to='/login' />}
                       >
                         <ThemedLayoutV2
                           Header={Header}
@@ -99,23 +112,26 @@ function App() {
                   >
                     <Route
                       index
-                      element={<NavigateToResource resource="logs" />}
+                      element={<NavigateToResource resource='logs' />}
                     />
-                    <Route path="/plates">
+                    <Route path='/plates'>
                       <Route index element={<PlatesList />} />
-                      <Route path="create" element={<PlatesCreate />} />
-                      <Route path="edit/:id" element={<PlatesEdit />} />
-                      <Route path="show/:id" element={<PlatesShow />} />
+                      <Route path='create' element={<PlatesCreate />} />
+                      <Route path='edit/:id' element={<PlatesEdit />} />
+                      <Route path='show/:id' element={<PlatesShow />} />
                     </Route>
-                    <Route path="/logs">
+                    <Route path='/logs'>
                       <Route index element={<LogList />} />
                     </Route>
-                    <Route path="*" element={<ErrorComponent />} />
+                    <Route path='/analytics'>
+                      <Route index element={<Analytics />} />
+                    </Route>
+                    <Route path='*' element={<ErrorComponent />} />
                   </Route>
                   <Route
                     element={
                       <Authenticated
-                        key="authenticated-outer"
+                        key='authenticated-outer'
                         fallback={<Outlet />}
                       >
                         <NavigateToResource />
@@ -123,26 +139,26 @@ function App() {
                     }
                   >
                     <Route
-                      path="/login"
+                      path='/login'
                       element={
                         <AuthPage
-                          type="login"
+                          type='login'
                           formProps={{
                             initialValues: {
-                              email: "info@refine.dev",
-                              password: "refine-supabase",
+                              email: 'info@refine.dev',
+                              password: 'refine-supabase',
                             },
                           }}
                         />
                       }
                     />
                     <Route
-                      path="/register"
-                      element={<AuthPage type="register" />}
+                      path='/register'
+                      element={<AuthPage type='register' />}
                     />
                     <Route
-                      path="/forgot-password"
-                      element={<AuthPage type="forgotPassword" />}
+                      path='/forgot-password'
+                      element={<AuthPage type='forgotPassword' />}
                     />
                   </Route>
                 </Routes>

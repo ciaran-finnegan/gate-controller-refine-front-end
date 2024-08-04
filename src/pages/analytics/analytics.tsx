@@ -2,7 +2,8 @@ import React, { useMemo } from "react";
 import { useList } from "@refinedev/core";
 import { Row, Col, Card, Typography, Spin, Statistic, DatePicker, ConfigProvider } from "antd";
 import { Bar, Line, Pie } from "@ant-design/plots";
-import moment from "moment";
+import moment, { Moment } from "moment";
+import { Dayjs } from "dayjs";
 
 const { Title } = Typography;
 const { RangePicker } = DatePicker;
@@ -12,19 +13,13 @@ const capitalize = (str: string) => {
   return str.replace(/\b\w/g, char => char.toUpperCase());
 };
 
-interface Log {
-  vehicle_registered_to_name?: string;
-  plate_number: string;
-  timestamp: string;
-}
-
 const Analytics: React.FC = () => {
-  const [dateRange, setDateRange] = React.useState([
+  const [dateRange, setDateRange] = React.useState<[Moment, Moment]>([
     moment().subtract(365, 'days'),
     moment()
   ]);
 
-  const { data, isLoading, error } = useList<Log>({
+  const { data, isLoading, error } = useList({
     resource: "log",
     filters: [
       {
@@ -153,7 +148,11 @@ const Analytics: React.FC = () => {
           <Col>
             <RangePicker
               value={dateRange}
-              onChange={(dates) => setDateRange(dates || [moment().subtract(365, 'days'), moment()])}
+              onChange={(dates) => {
+                if (dates) {
+                  setDateRange(dates as [Moment, Moment]);
+                }
+              }}
               allowClear={false}
               defaultPickerValue={[moment().subtract(90, 'days'), moment()]}
             />
@@ -193,7 +192,7 @@ const Analytics: React.FC = () => {
                 }}
                 interactions={[{ type: 'element-active' }]}
                 tooltip={{
-                  formatter: (datum) => ({ name: datum.user, value: datum.count }),
+                  formatter: (datum: any) => ({ name: datum.user, value: datum.count }),
                 }}
               />
             </Card>
@@ -208,7 +207,7 @@ const Analytics: React.FC = () => {
                   title: { text: 'Hour of Day' },
                   tickCount: 24,
                   label: {
-                    formatter: (text) => `${text}h`,
+                    formatter: (text: any) => `${text}h`,
                   },
                 }}
                 yAxis={{
@@ -236,7 +235,7 @@ const Analytics: React.FC = () => {
           <Col span={24}>
             <Card title="Top 10 Users by Access Frequency">
               <Bar
-                data={chartData.userFrequencyChartData.filter((item) => item.name !== "Unknown")}
+                data={chartData.userFrequencyChartData?.filter((item) => item.name !== "Unknown")}
                 xField="name"
                 yField="count"
                 seriesField="name"

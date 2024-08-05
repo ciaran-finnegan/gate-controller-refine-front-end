@@ -139,10 +139,10 @@ const Analytics: React.FC = () => {
 
   return (
     <ConfigProvider>
-      <div style={{ padding: "24px" }}>
+      <div style={{ padding: "16px" }}>
         <Row gutter={[16, 16]} align="middle" justify="space-between">
           <Col>
-            <Title level={2}>Gate Access Analytics Dashboard</Title>
+            <Title level={3}>Gate Access Analytics Dashboard</Title>
           </Col>
           <Col>
             <RangePicker
@@ -158,27 +158,27 @@ const Analytics: React.FC = () => {
           </Col>
         </Row>
         <Row gutter={[16, 16]}>
-          <Col span={6}>
+          <Col xs={24} sm={12} md={6}>
             <Card>
               <Statistic title="Total Entries" value={statistics.totalEntries} />
             </Card>
           </Col>
-          <Col span={6}>
+          <Col xs={24} sm={12} md={6}>
             <Card>
               <Statistic title="Unique Vehicles" value={statistics.uniqueVehicles} />
             </Card>
           </Col>
-          <Col span={6}>
+          <Col xs={24} sm={12} md={6}>
             <Card>
               <Statistic title="Most Common User" value={statistics.mostCommonUser} />
             </Card>
           </Col>
-          <Col span={6}>
+          <Col xs={24} sm={12} md={6}>
             <Card>
               <Statistic title="Avg. Entries per Day" value={statistics.averageEntriesPerDay} />
             </Card>
           </Col>
-          <Col span={12}>
+          <Col xs={24} sm={24} md={12}>
             <Card title="User Distribution">
               <Pie
                 data={chartData.userChartData}
@@ -196,7 +196,7 @@ const Analytics: React.FC = () => {
               />
             </Card>
           </Col>
-          <Col span={12}>
+          <Col xs={24} sm={24} md={12}>
             <Card title="Entries by Time of Day">
               <Line
                 data={chartData.timeOfDayChartData}
@@ -215,7 +215,7 @@ const Analytics: React.FC = () => {
               />
             </Card>
           </Col>
-          <Col span={24}>
+          <Col xs={24}>
             <Card title="Daily Entries Over Time">
               <Line
                 data={chartData.dailyChartData}
@@ -231,7 +231,7 @@ const Analytics: React.FC = () => {
               />
             </Card>
           </Col>
-          <Col span={24}>
+          <Col xs={24}>
             <Card title="Top 10 Users by Access Frequency">
               <Bar
                 data={chartData.userFrequencyChartData?.filter((item) => item.name !== "Unknown")}

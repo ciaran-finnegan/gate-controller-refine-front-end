@@ -63,6 +63,7 @@ export const LogList: React.FC = () => {
             onChange={handleFilterChange("plate_number")}
             allowClear
           >
+            <Select.Option value="131d2895">181WH624</Select.Option>
             <Select.Option value="181wh624">181WH624</Select.Option>
             <Select.Option value="11wh2571">11WH2571</Select.Option>
             <Select.Option value="172l66">172L66</Select.Option>
@@ -81,7 +82,7 @@ export const LogList: React.FC = () => {
             onChange={handleFilterChange("vehicle_registered_to_name")}
             allowClear
           >
-            <Select.Option value="johnny coghill">Johnny Coghill</Select.Option>
+            <Select.Option value="felim finnegan">Felim Finnegan</Select.Option><Select.Option value="johnny coghill">Johnny Coghill</Select.Option>
             <Select.Option value="josephine finnegan">Josephine Finnegan</Select.Option>
             <Select.Option value="fiachra finnegan">Fiachra Finnegan</Select.Option>
             <Select.Option value="alicia finnegan">Alicia Finnegan</Select.Option>

@@ -20,7 +20,7 @@ import routerBindings, {
 import { dataProvider, liveProvider } from '@refinedev/supabase';
 import { App as AntdApp } from 'antd';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
-import { CarOutlined, SettingOutlined, VideoCameraFilled } from '@ant-design/icons';
+import { CarOutlined, SettingOutlined, VideoCameraFilled, CalendarOutlined } from '@ant-design/icons'; // Added CalendarOutlined
 import authProvider from './authProvider';
 import { AppIcon } from './components/app-icon';
 import { Header } from './components/header';
@@ -32,8 +32,14 @@ import {
   PlatesShow,
 } from './pages/plates';
 import { LogList } from './pages/logs';
-import { Analytics } from './pages/analytics'; // Correct import statement
+import { Analytics } from './pages/analytics'; 
 import { supabaseClient } from './utility/supabaseClient';
+import {
+  SchedulesList,
+  SchedulesCreate,
+  SchedulesEdit,
+  SchedulesShow,
+} from './pages/schedules'; // Import schedules components
 
 function App() {
   return (
@@ -72,6 +78,20 @@ function App() {
                     options: {
                       label: 'Manage Vehicles',
                       icon: <SettingOutlined />,
+                    },
+                  },
+                  {
+                    name: 'access_schedule',
+                    list: '/schedules',
+                    create: '/schedules/create',
+                    edit: '/schedules/edit/:id',
+                    show: '/schedules/show/:id',
+                    meta: {
+                      canDelete: true,
+                    },
+                    options: {
+                      label: 'Manage Schedules',
+                      icon: <CalendarOutlined />,
                     },
                   },
                   {
@@ -122,6 +142,12 @@ function App() {
                     </Route>
                     <Route path='/logs'>
                       <Route index element={<LogList />} />
+                    </Route>
+                    <Route path='/schedules'>
+                      <Route index element={<SchedulesList />} />
+                      <Route path='create' element={<SchedulesCreate />} />
+                      <Route path='edit/:id' element={<SchedulesEdit />} />
+                      <Route path='show/:id' element={<SchedulesShow />} />
                     </Route>
                     <Route path='/analytics'>
                       <Route index element={<Analytics />} />

@@ -37,7 +37,7 @@
   },
   "scripts": {
     "dev": "refine dev",
-    "build": "tsc && refine build",
+    "build": "tsc && refine build && echo '/* /index.html  200' | cat >dist/_redirects",
     "start": "refine start",
     "refine": "refine"
   },

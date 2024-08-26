@@ -1,34 +1,15 @@
 import { Edit, useForm } from "@refinedev/antd";
-import { Form, Input, TimePicker } from "antd";
-import moment from "moment";  // Ensure moment is imported
+import { Form, Input } from "antd";
 
-export const SchedulesEdit = () => {
-  const { formProps, saveButtonProps } = useForm({
-    transform: (values) => {
-      // Transform the time values back to strings before saving
-      return {
-        ...values,
-        start_time: values.start_time ? values.start_time.format("HH:mm:ss") : null,
-        end_time: values.end_time ? values.end_time.format("HH:mm:ss") : null,
-      };
-    },
-    metaData: {
-      onLoad: (data) => {
-        return {
-          ...data,
-          start_time: data.start_time ? moment(data.start_time, "HH:mm:ss") : null,
-          end_time: data.end_time ? moment(data.end_time, "HH:mm:ss") : null,
-        };
-      },
-    },
-  });
+export const PlatesEdit = () => {
+  const { formProps, saveButtonProps } = useForm({});
 
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item
-          label="Day of Week"
-          name="day_of_week"
+          label={"Plate"}
+          name={["plate"]}
           rules={[
             {
               required: true,
@@ -38,26 +19,48 @@ export const SchedulesEdit = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="Start Time"
-          name="start_time"
+          label={"Name"}
+          name={["name"]}
           rules={[
             {
               required: true,
             },
           ]}
         >
-          <TimePicker format="HH:mm:ss" />
+          <Input />
         </Form.Item>
         <Form.Item
-          label="End Time"
-          name="end_time"
+          label={"Colour"}
+          name={["colour"]}
           rules={[
             {
               required: true,
             },
           ]}
         >
-          <TimePicker format="HH:mm:ss" />
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label={"Make"}
+          name={["make"]}
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label={"Model"}
+          name={["model"]}
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
         </Form.Item>
       </Form>
     </Edit>

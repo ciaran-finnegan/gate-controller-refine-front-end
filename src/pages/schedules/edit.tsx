@@ -1,30 +1,28 @@
 import { Edit, useForm } from "@refinedev/antd";
-import { Form, Input, TimePicker } from "antd";
-import moment, { Moment } from "moment";
+import { Form, Input } from "antd";
 
+// Define a type for the form data
 interface ScheduleFormData {
     day_of_week: string;
-    start_time: Moment | null; // Using moment type for time-related fields
-    end_time: Moment | null;
+    start_time: string | null; // Time as a string
+    end_time: string | null;   // Time as a string
 }
 
 export const SchedulesEdit = () => {
     const { formProps, saveButtonProps } = useForm<ScheduleFormData>({
         metaData: {
-            onLoad: (data: ScheduleFormData) => {
-                return {
-                    ...data,
-                    start_time: data.start_time ? moment(data.start_time, "HH:mm:ss") : null,
-                    end_time: data.end_time ? moment(data.end_time, "HH:mm:ss") : null,
-                };
-            },
-            transform: (values: ScheduleFormData) => {
-                return {
-                    ...values,
-                    start_time: values.start_time ? values.start_time.format("HH:mm:ss") : null,
-                    end_time: values.end_time ? values.end_time.format("HH:mm:ss") : null,
-                };
-            },
+            // Transform loaded data into the correct format for form usage
+            onLoad: (data: ScheduleFormData) => ({
+                ...data,
+                start_time: data.start_time || "", // Ensure start_time is a string
+                end_time: data.end_time || "",     // Ensure end_time is a string
+            }),
+            // Transform data back into the correct format for submission
+            transform: (values: ScheduleFormData) => ({
+                ...values,
+                start_time: values.start_time || null,
+                end_time: values.end_time || null,
+            }),
         },
     });
 
@@ -43,14 +41,14 @@ export const SchedulesEdit = () => {
                     name="start_time"
                     rules={[{ required: true }]}
                 >
-                    <TimePicker format="HH:mm:ss" />
+                    <Input placeholder="HH:mm:ss" />
                 </Form.Item>
                 <Form.Item
                     label="End Time"
                     name="end_time"
                     rules={[{ required: true }]}
                 >
-                    <TimePicker format="HH:mm:ss" />
+                    <Input placeholder="HH:mm:ss" />
                 </Form.Item>
             </Form>
         </Edit>

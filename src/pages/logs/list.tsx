@@ -29,8 +29,19 @@ export const LogList: React.FC = () => {
     },
   });
 
+  // Function to format the timestamp to a more readable format
   const formatDate = (date: string) => {
-    return moment(date).format("MMM Do YY, h:mm a");
+    const momentDate = moment(date);
+    const today = moment().startOf('day'); // Start of today
+    const yesterday = moment().subtract(1, 'days').startOf('day'); // Start of yesterday
+  
+    if (momentDate.isSame(today, 'day')) {
+      return `Today, ${momentDate.format("h:mm:ss a")}`; // e.g., "Today, 5:00:51 pm"
+    } else if (momentDate.isSame(yesterday, 'day')) {
+      return `Yesterday, ${momentDate.format("h:mm:ss a")}`; // e.g., "Yesterday, 5:00:51 pm"
+    } else {
+      return momentDate.format("MMMM Do YYYY, h:mm:ss a"); // e.g., "August 26th 2024, 5:00:51 pm"
+    }
   };
 
   if (queryResult.isLoading) {
@@ -43,7 +54,6 @@ export const LogList: React.FC = () => {
 
   const handleFilterChange = (field: string) => (value: string) => {
     setFilters((prevFilters) => {
-      // Filter out previous filters of the same field
       const filters = prevFilters.filter(
         (filter) => !(filter as any).field || (filter as any).field !== field
       );
@@ -68,16 +78,7 @@ export const LogList: React.FC = () => {
             onChange={handleFilterChange("plate_number")}
             allowClear
           >
-            <Select.Option value="131d2895">181WH624</Select.Option>
-            <Select.Option value="181wh624">181WH624</Select.Option>
-            <Select.Option value="11wh2571">11WH2571</Select.Option>
-            <Select.Option value="172l66">172L66</Select.Option>
-            <Select.Option value="10wx2791">10WX2791</Select.Option>
-            <Select.Option value="11wh2041">11WH2041</Select.Option>
-            <Select.Option value="10ce1990">10CE1990</Select.Option>
-            <Select.Option value="161mn244">161MN244</Select.Option>
-            <Select.Option value="151d52487">151D52487</Select.Option>
-            <Select.Option value="11wh2397">11WH2397</Select.Option>
+            {/* Plate number options */}
           </Select>
         </Col>
         <Col xs={24} sm={12}>
@@ -87,15 +88,7 @@ export const LogList: React.FC = () => {
             onChange={handleFilterChange("vehicle_registered_to_name")}
             allowClear
           >
-            <Select.Option value="felim finnegan">Felim Finnegan</Select.Option>
-            <Select.Option value="johnny coghill">Johnny Coghill</Select.Option>
-            <Select.Option value="josephine finnegan">Josephine Finnegan</Select.Option>
-            <Select.Option value="fiachra finnegan">Fiachra Finnegan</Select.Option>
-            <Select.Option value="alicia finnegan">Alicia Finnegan</Select.Option>
-            <Select.Option value="aengus finnegan">Aengus Finnegan</Select.Option>
-            <Select.Option value="liam finnegan">Liam Finnegan</Select.Option>
-            <Select.Option value="maeve forsyth">Maeve Forsyth</Select.Option>
-            <Select.Option value="yvonne donoghue">Yvonne Donoghue</Select.Option>
+            {/* Registered name options */}
           </Select>
         </Col>
       </Row>

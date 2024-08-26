@@ -24,6 +24,9 @@ export const LogList: React.FC = () => {
       ],
     },
     syncWithLocation: true,
+    pagination: {
+      pageSize: 48,
+    },
   });
 
   const formatDate = (date: string) => {
@@ -41,7 +44,9 @@ export const LogList: React.FC = () => {
   const handleFilterChange = (field: string) => (value: string) => {
     setFilters((prevFilters) => {
       // Filter out previous filters of the same field
-      const filters = prevFilters.filter((filter) => !(filter as any).field || (filter as any).field !== field);
+      const filters = prevFilters.filter(
+        (filter) => !(filter as any).field || (filter as any).field !== field
+      );
       if (value) {
         filters.push({
           field,
@@ -82,7 +87,8 @@ export const LogList: React.FC = () => {
             onChange={handleFilterChange("vehicle_registered_to_name")}
             allowClear
           >
-            <Select.Option value="felim finnegan">Felim Finnegan</Select.Option><Select.Option value="johnny coghill">Johnny Coghill</Select.Option>
+            <Select.Option value="felim finnegan">Felim Finnegan</Select.Option>
+            <Select.Option value="johnny coghill">Johnny Coghill</Select.Option>
             <Select.Option value="josephine finnegan">Josephine Finnegan</Select.Option>
             <Select.Option value="fiachra finnegan">Fiachra Finnegan</Select.Option>
             <Select.Option value="alicia finnegan">Alicia Finnegan</Select.Option>
@@ -99,7 +105,7 @@ export const LogList: React.FC = () => {
         grid={{ gutter: 16, column: 4, xs: 1, sm: 2, md: 4 }}
         renderItem={(item) => (
           <List.Item>
-            <div style={{  padding: "16px", borderRadius: "8px" }}>
+            <div style={{ padding: "16px", borderRadius: "8px" }}>
               <img src={item.image_path} alt="vehicle" style={{ width: "100%", height: "auto" }} />
               <Text style={{ display: "block", marginTop: "8px" }}>{formatDate(item.timestamp)}</Text>
               <Text style={{ display: "block" }}>{item.reason}</Text>

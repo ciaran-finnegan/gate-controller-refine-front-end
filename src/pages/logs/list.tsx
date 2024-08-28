@@ -97,11 +97,51 @@ export const LogList: React.FC = () => {
         {...listProps}
         grid={{ gutter: 16, column: 4, xs: 1, sm: 2, md: 4 }}
         renderItem={(item) => (
-          <List.Item>
-            <div style={{ padding: "16px", borderRadius: "8px" }}>
-              <img src={item.image_path} alt="vehicle" style={{ width: "100%", height: "auto" }} />
-              <Text style={{ display: "block", marginTop: "8px" }}>{formatDate(item.timestamp)}</Text>
-              <Text style={{ display: "block" }}>{item.reason}</Text>
+          <List.Item
+            style={{
+              border: '1px solid lightgrey',
+              boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+              borderRadius: '9px',
+            }}
+          >
+            <div
+              style={{
+                padding: '0',
+                borderRadius: '8px',
+                backgroundColor: 'white',
+              }}
+            >
+              <img
+                src={item.image_path}
+                alt="vehicle"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  borderTopLeftRadius: '8px',
+                  borderTopRightRadius: '8px',
+                }}
+              />
+              <Text
+                style={{
+                  display: 'block',
+                  marginTop: '8px',
+                  fontSize: '19px',
+                  padding: '0 16px',
+                }}
+              >
+                {formatDate(item.timestamp)}
+              </Text>
+              <Text
+                style={{
+                  display: 'block',
+                  marginTop: '11px',
+                  paddingBottom: '25px',
+                  paddingLeft: '16px',
+                  paddingRight: '16px',
+                }}
+              >
+                {item.reason}
+              </Text>
             </div>
           </List.Item>
         )}

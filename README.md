@@ -100,9 +100,12 @@ Netlify will automatically build and deploy your application. Any future changes
 - [Netlify](https://www.netlify.com/) - Hosting platform for continuous deployment and hosting.
 
 
-## Contributors and thanks
-Thanks to [Kaja](https://github.com/kaja-osojnik) for web application styling.
-Thanks to the [IPCamTalk Forum](https://ipcamtalk.com) community for guidance on configuring Hikvision smart event detection policies.
-Thanks to the folks at [Plate Recognizer](https://platerecognizer.com/) for providing free access to their API for personal use
-Thanks to the awesome [Ryan Glover](http://www.ryanglover.net/information) for his guidance on earlier projects and imparting his philosophy on independent software development and his many open source contributions. 
+## Acknowledgements and thanks
+- [Kaja](https://github.com/kaja-osojnik) for web application styling.
+- The [IPCamTalk Forum](https://ipcamtalk.com) community for guidance on configuring Hikvision smart event detection policies.
+- The folks at [Plate Recognizer](https://platerecognizer.com/) for providing free access to their API for personal use
+- The folks at [Supabase](https://supabase.io/) for providing a free tier for their services
+- The folks at [Netlify](https://netlify.com) for providing a free tier for their services
+- Civan Özseyhan and the team at [Refine](https://refine.dev/about/) for their commitment to open source and simplifying web application development for admin panels and CRUD applications.
+- And a special thanks to the awesome [Ryan Glover](http://www.ryanglover.net/information) for his guidance and encouragement on earlier projects and imparting his pragmatic philosophy on independent software development, his many open source contributions and switching me on to the fun of hobby software development.
 

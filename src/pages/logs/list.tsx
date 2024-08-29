@@ -1,6 +1,6 @@
 import React from "react";
 import { useSimpleList, useSelect } from "@refinedev/antd";
-import { Typography, List, Select, Row, Col, Spin } from "antd";
+import { Typography, List, Select, Row, Col, Spin, SelectProps } from "antd";
 import moment from "moment";
 
 const { Text } = Typography;
@@ -98,34 +98,44 @@ export const LogList: React.FC = () => {
     });
   };
 
+  // Define a type-safe version of your options
+  const formattedPlateNumberOptions: { label: string; value: string }[] =
+    plateNumberSelectProps.options?.map((option) => ({
+      label: formatPlateNumber(String(option.label)), // Ensure label is a string
+      value: String(option.value), // Ensure value is a string
+    })) || [];
+
+  const formattedRegisteredNameOptions: { label: string; value: string }[] =
+    registeredNameSelectProps.options?.map((option) => ({
+      label: formatName(String(option.label)), // Ensure label is a string
+      value: String(option.value), // Ensure value is a string
+    })) || [];
+
+  // Define SelectProps type specific to string value
+  const plateSelectProps: SelectProps<string> = {
+    placeholder: "Select plate number",
+    style: { width: "100%" },
+    onChange: handleFilterChange("plate_number"),
+    allowClear: true,
+    options: formattedPlateNumberOptions,
+  };
+
+  const nameSelectProps: SelectProps<string> = {
+    placeholder: "Select registered name",
+    style: { width: "100%" },
+    onChange: handleFilterChange("vehicle_registered_to_name"),
+    allowClear: true,
+    options: formattedRegisteredNameOptions,
+  };
+
   return (
-    <div style={{ width: "100%", maxWidth: "1200px", margin: "auto" }}> {/* Apply the CSS here */}
+    <div style={{ width: "100%", maxWidth: "1200px", margin: "auto" }}>
       <Row gutter={[16, 16]} style={{ marginBottom: "16px" }}>
         <Col xs={24} sm={12}>
-          <Select
-            {...plateNumberSelectProps}
-            placeholder="Select plate number"
-            style={{ width: "100%" }}
-            onChange={handleFilterChange("plate_number")}
-            allowClear
-            options={plateNumberSelectProps.options?.map((option) => ({
-              label: formatPlateNumber(option.label), // Apply formatting
-              value: option.value,
-            }))}
-          />
+          <Select {...plateSelectProps} />
         </Col>
         <Col xs={24} sm={12}>
-          <Select
-            {...registeredNameSelectProps}
-            placeholder="Select registered name"
-            style={{ width: "100%" }}
-            onChange={handleFilterChange("vehicle_registered_to_name")}
-            allowClear
-            options={registeredNameSelectProps.options?.map((option) => ({
-              label: formatName(option.label), // Apply formatting
-              value: option.value,
-            }))}
-          />
+          <Select {...nameSelectProps} />
         </Col>
       </Row>
 

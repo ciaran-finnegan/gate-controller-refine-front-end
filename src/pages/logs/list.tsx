@@ -1,5 +1,5 @@
 import React from "react";
-import { useSimpleList } from "@refinedev/antd";
+import { useSimpleList, useSelect } from "@refinedev/antd";
 import { Typography, List, Select, Row, Col, Spin } from "antd";
 import moment from "moment";
 
@@ -10,7 +10,25 @@ interface ILog {
   image_path: string;
   timestamp: string;
   reason: string;
+  plate_number: string;
+  vehicle_registered_to_name: string;
 }
+
+// Function to format plate numbers: uppercase and hyphenate appropriately
+const formatPlateNumber = (plate: string | null | undefined) => {
+  if (!plate) return ""; // Return an empty string if plate is null or undefined
+  // Match two patterns: letters followed by numbers
+  return plate.toUpperCase().replace(/^([A-Z]{1,2})(\d+)$/, "$1-$2");
+};
+
+// Function to capitalise first and last names
+const formatName = (name: string | null | undefined) => {
+  if (!name) return ""; // Return an empty string if name is null or undefined
+  return name
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+};
 
 export const LogList: React.FC = () => {
   const { listProps, setFilters, queryResult } = useSimpleList<ILog>({
@@ -29,18 +47,31 @@ export const LogList: React.FC = () => {
     },
   });
 
-  // Function to format the timestamp to a more readable format
+  // Fetch plate numbers
+  const { selectProps: plateNumberSelectProps } = useSelect({
+    resource: "log",
+    optionLabel: "plate_number",
+    optionValue: "plate_number",
+  });
+
+  // Fetch registered names
+  const { selectProps: registeredNameSelectProps } = useSelect({
+    resource: "log",
+    optionLabel: "vehicle_registered_to_name",
+    optionValue: "vehicle_registered_to_name",
+  });
+
   const formatDate = (date: string) => {
     const momentDate = moment(date);
-    const today = moment().startOf('day'); // Start of today
-    const yesterday = moment().subtract(1, 'days').startOf('day'); // Start of yesterday
-  
-    if (momentDate.isSame(today, 'day')) {
-      return `Today, ${momentDate.format("h:mm:ss a")}`; // e.g., "Today, 5:00:51 pm"
-    } else if (momentDate.isSame(yesterday, 'day')) {
-      return `Yesterday, ${momentDate.format("h:mm:ss a")}`; // e.g., "Yesterday, 5:00:51 pm"
+    const today = moment().startOf("day");
+    const yesterday = moment().subtract(1, "days").startOf("day");
+
+    if (momentDate.isSame(today, "day")) {
+      return `Today, ${momentDate.format("h:mm:ss a")}`;
+    } else if (momentDate.isSame(yesterday, "day")) {
+      return `Yesterday, ${momentDate.format("h:mm:ss a")}`;
     } else {
-      return momentDate.format("MMMM Do YYYY, h:mm:ss a"); // e.g., "August 26th 2024, 5:00:51 pm"
+      return momentDate.format("MMMM Do YYYY, h:mm:ss a");
     }
   };
 
@@ -73,23 +104,29 @@ export const LogList: React.FC = () => {
       <Row gutter={[16, 16]} style={{ marginBottom: "16px" }}>
         <Col xs={24} sm={12}>
           <Select
+            {...plateNumberSelectProps}
             placeholder="Select plate number"
             style={{ width: "100%" }}
             onChange={handleFilterChange("plate_number")}
             allowClear
-          >
-            {/* Plate number options */}
-          </Select>
+            options={plateNumberSelectProps.options?.map((option) => ({
+              label: formatPlateNumber(option.label), // Apply formatting
+              value: option.value,
+            }))}
+          />
         </Col>
         <Col xs={24} sm={12}>
           <Select
+            {...registeredNameSelectProps}
             placeholder="Select registered name"
             style={{ width: "100%" }}
             onChange={handleFilterChange("vehicle_registered_to_name")}
             allowClear
-          >
-            {/* Registered name options */}
-          </Select>
+            options={registeredNameSelectProps.options?.map((option) => ({
+              label: formatName(option.label), // Apply formatting
+              value: option.value,
+            }))}
+          />
         </Col>
       </Row>
 
@@ -99,45 +136,45 @@ export const LogList: React.FC = () => {
         renderItem={(item) => (
           <List.Item
             style={{
-              border: '1px solid lightgrey',
-              boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
-              borderRadius: '9px',
+              border: "1px solid lightgrey",
+              boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+              borderRadius: "9px",
             }}
           >
             <div
               style={{
-                padding: '0',
-                borderRadius: '8px',
-                backgroundColor: 'white',
+                padding: "0",
+                borderRadius: "8px",
+                backgroundColor: "white",
               }}
             >
               <img
                 src={item.image_path}
                 alt="vehicle"
                 style={{
-                  width: '100%',
-                  height: 'auto',
-                  borderTopLeftRadius: '8px',
-                  borderTopRightRadius: '8px',
+                  width: "100%",
+                  height: "auto",
+                  borderTopLeftRadius: "8px",
+                  borderTopRightRadius: "8px",
                 }}
               />
               <Text
                 style={{
-                  display: 'block',
-                  marginTop: '8px',
-                  fontSize: '19px',
-                  padding: '0 16px',
+                  display: "block",
+                  marginTop: "8px",
+                  fontSize: "19px",
+                  padding: "0 16px",
                 }}
               >
                 {formatDate(item.timestamp)}
               </Text>
               <Text
                 style={{
-                  display: 'block',
-                  marginTop: '11px',
-                  paddingBottom: '25px',
-                  paddingLeft: '16px',
-                  paddingRight: '16px',
+                  display: "block",
+                  marginTop: "11px",
+                  paddingBottom: "25px",
+                  paddingLeft: "16px",
+                  paddingRight: "16px",
                 }}
               >
                 {item.reason}

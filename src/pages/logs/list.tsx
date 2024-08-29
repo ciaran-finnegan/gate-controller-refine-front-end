@@ -17,7 +17,6 @@ interface ILog {
 // Function to format plate numbers: uppercase and hyphenate appropriately
 const formatPlateNumber = (plate: string | null | undefined) => {
   if (!plate) return ""; // Return an empty string if plate is null or undefined
-  // Match two patterns: letters followed by numbers
   return plate.toUpperCase().replace(/^([A-Z]{1,2})(\d+)$/, "$1-$2");
 };
 
@@ -100,7 +99,7 @@ export const LogList: React.FC = () => {
   };
 
   return (
-    <div>
+    <div style={{ width: "100%", maxWidth: "1200px", margin: "auto" }}> {/* Apply the CSS here */}
       <Row gutter={[16, 16]} style={{ marginBottom: "16px" }}>
         <Col xs={24} sm={12}>
           <Select

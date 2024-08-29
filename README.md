@@ -21,6 +21,8 @@ An alternative AWS hosted version can be found [here](https://github.com/ciaran-
 ## Status
 This is a working prototype. Documentation is limited and untested; a working knowledge of web application deveopment is recommended if you choose to implement.
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/8253eb67-c4b1-4cb9-8a7d-f12c7d321077/deploy-status)](https://app.netlify.com/sites/gate-manager/deploys)
+
 ## How It Works
 
 1. **User Authentication**: The application uses Supabase for user authentication, allowing secure access to manage vehicles, schedules, and view logs.

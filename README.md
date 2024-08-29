@@ -18,6 +18,9 @@ An alternative AWS hosted version can be found [here](https://github.com/ciaran-
 - **Manage Schedules**: Configure access schedules for specific times or days to control when vehicles can enter.
 - **Analytics**: Gain insights into gate usage with detailed analytics, including patterns of vehicle access.
 
+## Status
+This is a working prototype. Documentation is limited and untested; a working knowledge of web application deveopment is recommended if you choose to implement.
+
 ## How It Works
 
 1. **User Authentication**: The application uses Supabase for user authentication, allowing secure access to manage vehicles, schedules, and view logs.
